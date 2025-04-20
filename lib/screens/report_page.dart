@@ -62,172 +62,180 @@ class AnonymousReportPageState extends State<AnonymousReportPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Submit & Track Your Report")),
 
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 🔹 Sub-description below title bar
-            const Text(
-              "🛡 Report cybercrimes and track updates on your case in real time.",
-              style: TextStyle(fontSize: 18, color: Color.fromARGB(255, 29, 28, 28)),
-              textAlign: TextAlign.center,
-            ),
-
-            const SizedBox(height: 40), // Spacing before form
-
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  // 🔹 Crime Type Dropdown
-                  DropdownButtonFormField<String>(
-                    value: _selectedCrime,
-                    items: ["Cyberbullying", "Fraud", "Hacking"].map((String category) {
-                      return DropdownMenuItem(
-                        value: category,
-                        child: Text(category),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedCrime = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      labelText: "Type of Crime",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 30), // Spacing
-
-                  // 🔹 Date & Time Selection (Row)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: "Date of Incident",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          controller: TextEditingController(
-                            text: _selectedDate == null
-                                ? ''
-                                : DateFormat.yMMMd().format(_selectedDate!),
-                          ),
-                          onTap: () => _pickDate(context),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: TextFormField(
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: "Time of Incident",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          controller: TextEditingController(
-                            text: _selectedTime == null
-                                ? ''
-                                : _selectedTime!.format(context),
-                          ),
-                          onTap: () => _pickTime(context),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 30), // Spacing
-
-                  // 🔹 Incident Description Field
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "Incident Description",
-                      alignLabelWithHint: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    maxLines: 3,
-                  ),
-
-                  const SizedBox(height: 30), // Spacing
-
-                  // 🔹 State Selection Dropdown
-                  DropdownButtonFormField<String>(
-                    value: _selectedState,
-                    items: [
-                      "Tamil Nadu", "Karnataka", "Maharashtra", "Delhi", "Other"
-                    ].map((String state) {
-                      return DropdownMenuItem(
-                        value: state,
-                        child: Text(state),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedState = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      labelText: "Select State",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 30), // Spacing
-
-                  // 🔹 File Upload Field
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          _fileName ?? "No file selected",
-                          style: TextStyle(color: Colors.grey[700]),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      TextButton.icon(
-                        onPressed: _pickFile,
-                        icon: const Icon(Icons.attach_file),
-                        label: const Text("Upload Evidence"),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 50), // Spacing before button
-
-                  // 🔹 Submit Button
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _selectedCrime == null ? Colors.grey : Colors.blue,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    ),
-                    onPressed: _selectedCrime == null
-                        ? null // Disable button if no crime is selected
-                        : () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const ThankYouFinal()),
-                            );
-                          },
-                    child: const Text("Submit Report", style: TextStyle(fontSize: 16)),
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: 16.0,
+            right: 16.0,
+            top: 16.0,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 🔹 Sub-description below title bar
+              const Text(
+                "🛡 Report cybercrimes and track updates on your case in real time.",
+                style: TextStyle(fontSize: 18, color: Color.fromARGB(255, 29, 28, 28)),
+                textAlign: TextAlign.center,
               ),
-            ),
-          ],
+
+              const SizedBox(height: 40), // Spacing before form
+
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    // 🔹 Crime Type Dropdown
+                    DropdownButtonFormField<String>(
+                      value: _selectedCrime,
+                      items: ["Cyberbullying", "Mobile phone Fraud", "Social media Hack", "online shopping scam"]
+                          .map((String category) {
+                        return DropdownMenuItem(
+                          value: category,
+                          child: Text(category),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCrime = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: "Type of Crime",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 30), // Spacing
+
+                    // 🔹 Date & Time Selection (Row)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              labelText: "Date of Incident",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            controller: TextEditingController(
+                              text: _selectedDate == null
+                                  ? ''
+                                  : DateFormat.yMMMd().format(_selectedDate!),
+                            ),
+                            onTap: () => _pickDate(context),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextFormField(
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              labelText: "Time of Incident",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            controller: TextEditingController(
+                              text: _selectedTime == null
+                                  ? ''
+                                  : _selectedTime!.format(context),
+                            ),
+                            onTap: () => _pickTime(context),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 30), // Spacing
+
+                    // 🔹 Incident Description Field
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Incident Description",
+                        alignLabelWithHint: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      maxLines: 3,
+                    ),
+
+                    const SizedBox(height: 30), // Spacing
+
+                    // 🔹 State Selection Dropdown
+                    DropdownButtonFormField<String>(
+                      value: _selectedState,
+                      items: [
+                        "Tamil Nadu", "Karnataka", "Maharashtra", "Delhi", "Other"
+                      ].map((String state) {
+                        return DropdownMenuItem(
+                          value: state,
+                          child: Text(state),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedState = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: "Select State",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 30), // Spacing
+
+                    // 🔹 File Upload Field
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            _fileName ?? "No file selected",
+                            style: TextStyle(color: Colors.grey[700]),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        TextButton.icon(
+                          onPressed: _pickFile,
+                          icon: const Icon(Icons.attach_file),
+                          label: const Text("Upload Evidence"),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 50), // Spacing before button
+
+                    // 🔹 Submit Button
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _selectedCrime == null ? Colors.grey : Colors.blue,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      ),
+                      onPressed: _selectedCrime == null
+                          ? null // Disable button if no crime is selected
+                          : () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ThankYouFinal()),
+                              );
+                            },
+                      child: const Text("Submit Report", style: TextStyle(fontSize: 16)),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
